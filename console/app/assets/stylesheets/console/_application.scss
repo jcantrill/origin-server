@@ -342,6 +342,10 @@ h1.applications .flow-block.right .gear-icon {
       height: 38px;
       vertical-align: middle;
     }
+    select#application_region {
+      height: 38px;
+      vertical-align: bottom;
+    }
   }
   ol.spaced-items > li {
     line-height: 28px; // match SELECT

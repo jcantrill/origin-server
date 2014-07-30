@@ -5,7 +5,20 @@
       - if @regions.size == 1
         %h3= @regions.first.name
       - else
-        = f.select :region, @regions.collect{|r|[r.name, r.name]}, :selected=>default_region(@regions)
+        - @no_description = 'No description'
+        - @regions.select{|r|r.description.blank?}.each{|r|r.description = @no_description}
+        .input-append
+          = f.select :region, @regions.collect{|r|[r.name, {:title=>r.description}]}, :selected=>default_region(@regions)
+          %span.add-on#region_desc
+            = (defaulted = @regions.select{|r|r.default}.first) ? defaulted.description : @regions.first.description
+        - content_for :javascripts do
+          :coffee
+            $(document).ready ->
+              $('#region_desc').toggleClass('italics muted',$('#region_desc').html().trim() == '#{@no_description}')
+              $('#application_region').change ->
+                title = $('option:selected',this).attr('title')
+                $('#region_desc').html(title)
+                $('#region_desc').toggleClass('italics muted',title == '#{@no_description}')
     .controls
       %p.help-block
         Gears within your application will run on servers in the specified region.
