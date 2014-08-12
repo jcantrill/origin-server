@@ -196,6 +196,19 @@ describe Console::ModelHelper do
     @default = 'region 2'
   end
 
+  describe '#update_region_descriptions' do
+    it 'should leave them all blank if none have descriptions' do
+      update_region_descriptions(@region).must_be_nil
+      @regions.select{|r| !r.description.blank? }.must_be_empty
+    end
+
+    it 'should update the blank descriptions to a default value if at least one has a value' do
+      @regions[1].description = 'Region 2 description'
+      update_region_descriptions(@region).wont_be_nil
+      @regions.select{|r| !r.description.blank? }.count.must_equal @regions.count
+    end
+  end
+
   describe '#default_region' do
 
     it 'should return empty string for an empty list' do

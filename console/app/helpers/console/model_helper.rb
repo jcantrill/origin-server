@@ -1,4 +1,19 @@
 module Console::ModelHelper
+ 
+  NO_REGION_DESCRIPTION = 'No description'
+
+  ##
+  # Update the region descriptions to the default if at least
+  # one region has a description.
+  # @param  (Array)  gear_groups   A list of gear groups
+  # @return (bool)                 True if the descriptions should be displayed
+  #                                nil otherwise
+  def update_region_descriptions(regions)
+    no_desc = @regions.select{|r|r.description.blank?}
+    if no_desc.count != @regions.size
+      no_desc.each {|r| r.description = NO_REGION_DESCRIPTION }
+    end
+  end
 
   ##
   # Retrieve the assigned region from a list of GearGroups
